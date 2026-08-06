@@ -76,8 +76,22 @@ gpu-partition-run list
 gpu-partition-run status
 ```
 
-Expected AGX geometry is 16 total SMs and two 8-SM slots. An 8-SM NX resource
-should produce two 4-SM slots. The runtime CUDA query is authoritative.
+The probe is a platform capability diagnostic. With no option, it creates two
+minimum-size 4-SM groups and can leave a remainder. Check the exact manager
+geometry separately:
+
+```bash
+# AGX: require two 8-SM groups and no remainder in the probe output.
+gpu-vm-green-context-probe --min-sm-count 8
+gpu-partition-run status
+
+# NX: require two 4-SM groups and no remainder in the probe output.
+gpu-vm-green-context-probe --min-sm-count 4
+gpu-partition-run status
+```
+
+Expected AGX manager geometry is 16 total SMs and two 8-SM slots. An 8-SM NX
+resource should produce two 4-SM slots. The runtime CUDA query is authoritative.
 
 ## Run Examples
 

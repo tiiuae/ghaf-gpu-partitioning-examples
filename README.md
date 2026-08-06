@@ -58,10 +58,11 @@ command. See [Architecture](docs/architecture.md) and
 
 ## Validation Status
 
-The original implementation was live-validated on AGX with a 16-SM resource,
-an 8+8 split, concurrent workloads, cancellation, managed CDI, and a 30-minute
-dual-slot run. NX currently has build and evaluation coverage only; live NX
-validation remains required.
+The extracted three-repository dependency chain was flashed and live-validated
+on AGX with a 16-SM resource, an 8+8 split, direct and managed CDI, concurrent
+workloads, cancellation, interference observation, and a 30-minute dual-slot
+run. NX currently has build and evaluation coverage only; live NX validation
+remains required.
 
-The historical measurements and their limitations are recorded in
+The post-extraction measurements and their limitations are recorded in
 [AGX Validation](docs/results/agx-2026-08-06.md).
