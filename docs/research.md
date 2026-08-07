@@ -14,7 +14,10 @@ Run each case on AGX and NX using the same Ghaf lock revision:
 | Capability probe | Total SMs, two groups, remainder, readback |
 | Direct CDI smoke | Device injection and real kernel completion |
 | Managed CDI smoke | No GPU nodes, socket access, managed completion |
+| External direct image | Digest, compatibility metadata, real framework CUDA |
+| External managed image | No GPU nodes, direct CUDA denial, manager completion |
 | Two-slot burn | Both slots complete under overlap |
+| Managed GEMM | Dimensions, iterations, validation sample, observed GFLOP/s |
 | Same-slot queue | FIFO job starts after predecessor exits |
 | Cancellation | Active job exits 130 and queued work proceeds |
 | 30-minute endurance | Iterations, validation, faults, restarts |
@@ -24,6 +27,8 @@ Run each case on AGX and NX using the same Ghaf lock revision:
 
 Record the exact image store path, Ghaf revision, board model, manager journal,
 GPU-VM restart count, manager restart count, and relevant `dmesg` lines.
+Use `gpu-partition-example-collect-results` for the guest-side portion and keep
+its result directory with raw scenario output.
 
 ## Interpretation
 
@@ -39,9 +44,10 @@ for both boards, thermal states, power modes, and unmanaged background load.
 
 - Configurable partition geometry beyond two equal slots
 - Scheduling fairness and per-client quotas
-- Structured JSON result output
+- Structured JSON result output from every scenario
 - Thermal and power-mode sensitivity
 - Memory-bandwidth and copy-engine interference
 - Manager recovery after plugin CUDA failure
 - Long-duration queue, disconnect, and cancellation races
 - Live NX parity with the AGX validation suite
+- Qualification and periodic refresh of digest-pinned external images

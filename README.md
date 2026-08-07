@@ -21,12 +21,14 @@ the lock in a dedicated pull request.
 
 The examples include:
 
-- trusted `burn` and `latency` manager plugins;
+- trusted `burn`, `latency`, and cuBLAS `gemm` manager plugins;
 - direct and managed container images;
+- digest-pinned external CUDA/PyTorch container interoperability profiles;
 - CDI smoke tests;
 - simultaneous two-slot endurance tests;
-- queue and cancellation checks; and
-- exploratory managed-versus-unmanaged interference measurements.
+- queue and cancellation checks;
+- exploratory managed-versus-unmanaged interference measurements; and
+- runtime compatibility manifests and machine-readable result bundles.
 
 CUDA Green Contexts provide cooperative SM placement. They do not guarantee
 security isolation, concurrent progress, memory-bandwidth isolation, or
@@ -55,6 +57,8 @@ gpu-partition-example-smoke
 See [User Guide](docs/user-guide.md) for deployment and every installed
 command. See [Architecture](docs/architecture.md) and
 [Plugin Development](docs/plugin-development.md) before adding workloads.
+External images require separate qualification; see
+[Jetson Containers Interoperability](docs/jetson-containers-interop.md).
 
 ## Validation Status
 

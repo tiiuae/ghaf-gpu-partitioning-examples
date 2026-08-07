@@ -93,6 +93,23 @@ gpu-partition-run status
 Expected AGX manager geometry is 16 total SMs and two 8-SM slots. An 8-SM NX
 resource should produce two 4-SM slots. The runtime CUDA query is authoritative.
 
+Record the build and runtime identity before testing:
+
+```bash
+gpu-partition-example-runtime-info
+
+# Add the idle-only exact Green Context probe to the JSON output.
+gpu-partition-example-runtime-info --probe
+
+# Collect runtime identity, manager state, journals, failed units, and focused
+# kernel diagnostics without collecting environment variables or credentials.
+gpu-partition-example-collect-results --probe --output results-before
+```
+
+The output directory must be empty. Retain it with the workload results so a
+measurement remains tied to its exact Ghaf, manager, examples, L4T, CUDA, and
+CDI revisions.
+
 ## Run Examples
 
 ```bash
@@ -111,7 +128,29 @@ gpu-partition-example-queue-cancel
 # Baseline, managed co-load, and unmanaged direct-GPU co-load.
 # Arguments are latency iterations and burn seconds.
 gpu-partition-example-interference 10000 30
+
+# Validated cuBLAS SGEMM through a managed Green Context.
+# Arguments are square matrix size and duration in seconds.
+gpu-partition-example-gemm 1024 30
 ```
+
+## External Jetson Containers Images
+
+External images are opt-in and are never downloaded by the example image
+build. Use a descriptive tag plus an immutable digest:
+
+```bash
+gpu-partition-example-external-smoke \
+  --profile cuda-python \
+  --image registry/image:r36.5.0-cu126@sha256:DIGEST \
+  --output external-results
+```
+
+The image must already be local. Add `--pull` only after approving the target
+storage impact. The harness runs with `--network=none`, uses Ghaf CDI directly,
+and refuses images whose declared architecture, L4T, or CUDA version is outside
+the profile. See [Jetson Containers Interoperability](jetson-containers-interop.md)
+before qualifying an image.
 
 The lower-level client remains available:
 
@@ -157,3 +196,5 @@ interfere with both managed slots.
 - A missing manager socket usually means the service never became ready or
   the managed CDI device was not enabled.
 - Timing differences alone do not prove concurrency or isolation.
+- Do not work around an external-image failure with `--privileged`, host
+  networking, `--runtime=nvidia`, or manually mounted GPU nodes.

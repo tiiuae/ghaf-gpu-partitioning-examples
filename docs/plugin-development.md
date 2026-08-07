@@ -54,13 +54,20 @@ The example builder links against the CUDA driver and the exact SDK from the
 pinned Ghaf package. It deliberately keeps PTX and other workload assets in
 this repository.
 
+The `gemm` plugin is the example for a CUDA library layered on the driver API.
+It links the pinned JetPack cuBLAS package, binds its handle to the stream
+supplied by the manager, bounds matrix memory and duration, checks cancellation
+between synchronized operations, and validates deterministic output. Additional
+library-based plugins must preserve those properties and must not create their
+own CUDA context.
+
 ## Validate A Change
 
 Run formatting and licensing checks, then evaluate both target systems:
 
 ```bash
 nix fmt -- --check .
-nix run --inputs-from . nixpkgs#reuse -- lint
+nix develop --command reuse lint
 nix eval --raw \
   .#nixosConfigurations.nvidia-jetson-orin-agx-gpu-partitioning-example.config.system.build.ghafImage.drvPath
 nix eval --raw \

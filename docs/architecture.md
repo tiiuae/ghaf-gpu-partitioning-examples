@@ -29,6 +29,11 @@ Neither Ghaf nor the manager imports this repository. Updating the examples
 therefore cannot change a normal Ghaf image unless a downstream target
 explicitly imports the module.
 
+External registry images are runtime test inputs, not flake inputs and not part
+of the flash closure. A profile supplies compatibility requirements and a test
+program; an operator supplies an immutable image digest. This keeps registry
+selection outside the trusted manager and preserves reproducible target builds.
+
 ## Runtime Data Flow
 
 ```text
@@ -72,6 +77,11 @@ boundary, not a CUDA tenant boundary. The following remain outside its scope:
 
 Rootful Docker membership is root-equivalent inside GPU-VM. Product
 configurations must decide independently whether that access is acceptable.
+
+The external-image harness uses `nvidia.com/gpu=all` only for its direct CUDA
+test. Its managed test receives no GPU device nodes and can reach only the
+manager socket and mounted client closure. It never uses privileged mode, host
+networking, or Jetson Containers' broad default device mounts.
 
 ## Versioning
 

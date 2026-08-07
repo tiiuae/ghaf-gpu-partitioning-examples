@@ -27,14 +27,29 @@
     let
       lib = ghaf.lib;
 
+      inputRevision = input: input.rev or input.dirtyRev or "unknown";
+      revisions = {
+        examples = inputRevision self;
+        ghaf = inputRevision ghaf;
+        manager = inputRevision ghaf.inputs."gpu-partition-manager";
+      };
+
       mkExample =
         {
           name,
           upstreamName,
+          target,
         }:
         let
           hostConfiguration = ghaf.nixosConfigurations.${upstreamName}.extendModules {
-            modules = [ self.nixosModules.default ];
+            modules = [
+              self.nixosModules.default
+              {
+                ghaf.gpuPartitioningExamples.metadata = {
+                  inherit revisions target;
+                };
+              }
+            ];
           };
         in
         {
@@ -46,10 +61,12 @@
         (mkExample {
           name = "nvidia-jetson-orin-agx-gpu-partitioning-example";
           upstreamName = "nvidia-jetson-orin-agx-debug-from-x86_64";
+          target = "orin-agx";
         })
         (mkExample {
           name = "nvidia-jetson-orin-nx-gpu-partitioning-example";
           upstreamName = "nvidia-jetson-orin-nx-debug-from-x86_64";
+          target = "orin-nx";
         })
       ];
     in
@@ -75,6 +92,41 @@
             ghaf.packages.x86_64-linux.nvidia-jetson-orin-nx-debug-from-x86_64-flash-script;
         };
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+      checks.x86_64-linux.external-container-smoke =
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          testSource = pkgs.runCommand "gpu-partition-external-container-smoke-source" { } ''
+            mkdir -p $out/scenarios $out/external-tests
+            cp ${./scenarios/external-container-smoke.sh} $out/scenarios/external-container-smoke.sh
+            cp ${./external-tests/cuda-python.py} $out/external-tests/cuda-python.py
+          '';
+        in
+        pkgs.runCommand "gpu-partition-external-container-smoke-test"
+          {
+            nativeBuildInputs = [
+              pkgs.bash
+              pkgs.coreutils
+              pkgs.jq
+            ];
+          }
+          ''
+            bash ${./tests/external-container-smoke.sh} ${testSource}
+            touch $out
+          '';
+
+      devShells.x86_64-linux.default =
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        in
+        pkgs.mkShellNoCC {
+          packages = [
+            pkgs.clang-tools
+            pkgs.python3
+            pkgs.reuse
+            pkgs.shellcheck
+          ];
+        };
+
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;
     };
 }
