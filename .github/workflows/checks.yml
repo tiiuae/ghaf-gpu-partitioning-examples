@@ -1,0 +1,55 @@
+# SPDX-FileCopyrightText: 2026 TII (SSRC) and the Ghaf contributors
+# SPDX-License-Identifier: Apache-2.0
+
+name: checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}.${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: format, licence, and evaluation
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Nix
+        uses: cachix/install-nix-action@630ae543ea3a38a9a4166f03376c02c50f408342 # v31.11.0
+        with:
+          extra_nix_config: |
+            accept-flake-config = true
+
+      - name: Check formatting
+        run: nix fmt -- --check .
+
+      - name: Check licence metadata
+        run: nix run --inputs-from . nixpkgs#reuse -- lint
+
+      - name: Evaluate AGX image
+        run: >-
+          nix eval --raw
+          .#nixosConfigurations.nvidia-jetson-orin-agx-gpu-partitioning-example.config.system.build.ghafImage.drvPath
+
+      - name: Evaluate NX image
+        run: >-
+          nix eval --raw
+          .#nixosConfigurations.nvidia-jetson-orin-nx-gpu-partitioning-example.config.system.build.ghafImage.drvPath
