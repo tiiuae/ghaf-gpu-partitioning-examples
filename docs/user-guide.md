@@ -11,9 +11,13 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 | --- | --- | --- |
 | Orin AGX | `nvidia-jetson-orin-agx-gpu-partitioning-example` | `nvidia-jetson-orin-agx-flash-script` |
 | Orin NX | `nvidia-jetson-orin-nx-gpu-partitioning-example` | `nvidia-jetson-orin-nx-flash-script` |
+| Orin AGX combined | `nvidia-jetson-orin-agx-combined-example` | `nvidia-jetson-orin-agx-flash-script` |
+| Orin NX combined | `nvidia-jetson-orin-nx-combined-example` | `nvidia-jetson-orin-nx-flash-script` |
 
-Both images use Ghaf's debug split topology: `gpu-vm` owns compute,
+The GPU-partitioning images use Ghaf's debug split topology: `gpu-vm` owns compute,
 `disp-vm` owns display, and NetVM owns external networking.
+The combined targets assign GPU and display to GUI-VM and omit the partitioning
+workload suite; use them for desktop and input regression testing.
 
 ## Build
 
