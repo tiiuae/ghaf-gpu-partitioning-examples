@@ -288,11 +288,11 @@
         "xwayland-satellite": "xwayland-satellite"
       },
       "locked": {
-        "lastModified": 1787678582,
-        "narHash": "sha256-cYB9YpbzFTURrtu546wZB+yI7DcLoa5nZ8tw1xRfOwU=",
+        "lastModified": 1787693251,
+        "narHash": "sha256-owAraQWKSBCW6cOcuu6QCPFTMGSr+0J+LIwPwxbYokQ=",
         "ref": "refs/pull/2133/head",
-        "rev": "d5149791569275c3320d3c72126b8ea1b8848bfe",
-        "revCount": 2726,
+        "rev": "4b9bea29547b459b7af57b6a2aff19630340ad59",
+        "revCount": 2733,
         "type": "git",
         "url": "https://github.com/tiiuae/ghaf.git"
       },
@@ -328,16 +328,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1787664401,
+        "lastModified": 1787665362,
         "narHash": "sha256-lQ+UYvLy/Z0M3j75fKEcagLKCKNi//QhFccsHuEUIhM=",
         "owner": "tiiuae",
         "repo": "ghaf-device-manager",
-        "rev": "c90f6007e072a6a09354a877656ee68744f314a3",
+        "rev": "97835a588f651e915b3812a045164eac64fee1ed",
         "type": "github"
       },
       "original": {
         "owner": "tiiuae",
-        "ref": "feat/export-overlay",
         "repo": "ghaf-device-manager",
         "type": "github"
       }
@@ -557,11 +556,11 @@
         "spectrum": "spectrum"
       },
       "locked": {
-        "lastModified": 1787644945,
-        "narHash": "sha256-U1zYeulGtXjcs8VXosrg3/SKpJ4jFl1hoSHAlrBmdHE=",
+        "lastModified": 1787686269,
+        "narHash": "sha256-Se2jFOq9MG8MkKEfe9t4onf8n3ZOidzVkJFQB6Iz8XI=",
         "owner": "vadika",
         "repo": "microvm.nix",
-        "rev": "9c2a5cbbb107625e5211df23e6ea0703f12d8a0c",
+        "rev": "88d9bce92524bae0fe5ab6173e05ee96e0b36fcb",
         "type": "github"
       },
       "original": {
