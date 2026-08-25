@@ -288,11 +288,11 @@
         "xwayland-satellite": "xwayland-satellite"
       },
       "locked": {
-        "lastModified": 1787652346,
-        "narHash": "sha256-zDABnPiEBp8O/LGUlQvNpspo9pjR/GLIMEb/MVTMA+8=",
+        "lastModified": 1787664844,
+        "narHash": "sha256-a3k00B4eLJ4+eGePdQwGQrYRXElj/SyTliBxYCp+lmI=",
         "ref": "refs/pull/2133/head",
-        "rev": "842353825f8edeac8cee5a604ea5b40b171d305f",
-        "revCount": 2716,
+        "rev": "13e173b8e4408c7c58826c52d91d202e9d05890f",
+        "revCount": 2721,
         "type": "git",
         "url": "https://github.com/tiiuae/ghaf.git"
       },
@@ -328,15 +328,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1787394730,
-        "narHash": "sha256-fk/iEyaeo7JJuF7si2evc7JzBGHTHBOglS/WQw4y1Co=",
+        "lastModified": 1787664401,
+        "narHash": "sha256-lQ+UYvLy/Z0M3j75fKEcagLKCKNi//QhFccsHuEUIhM=",
         "owner": "tiiuae",
         "repo": "ghaf-device-manager",
-        "rev": "f09c1336d72dd9a575636fbf3359beadff1fd0c9",
+        "rev": "c90f6007e072a6a09354a877656ee68744f314a3",
         "type": "github"
       },
       "original": {
         "owner": "tiiuae",
+        "ref": "feat/export-overlay",
         "repo": "ghaf-device-manager",
         "type": "github"
       }
@@ -533,11 +534,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787651889,
-        "narHash": "sha256-wizH1Q4kdHvav5v+VEcFAelvxFSxEEK2qMJfDlh2OZc=",
+        "lastModified": 1787664412,
+        "narHash": "sha256-UCFUTi+oVOeRqbiOXbQwOcpQ/z52ZnJMGncWtlv11Bg=",
         "owner": "tiiuae",
         "repo": "jetpack-nixos",
-        "rev": "c00cccf9381be49d700d3221dd2c348fc1e07bc9",
+        "rev": "39272212be5cba1c30e130fd108b7e2fd4941c90",
         "type": "github"
       },
       "original": {
