@@ -45,6 +45,7 @@
         let
           hostConfiguration = ghaf.nixosConfigurations.${upstreamName}.extendModules {
             modules = [
+              ghaf.nixosModules.jetpack-orin-gpu-partitioning
               self.nixosModules.orin-passthrough
             ]
             ++ lib.optional workloads self.nixosModules.default
@@ -70,6 +71,7 @@
           modules = [
             {
               ghaf.hardware.nvidia.passthroughs = {
+                gui_vm.enable = lib.mkForce false;
                 gpu_vm.enable = true;
                 disp_vm.enable = true;
               };
@@ -84,6 +86,7 @@
           modules = [
             {
               ghaf.hardware.nvidia.passthroughs = {
+                gui_vm.enable = lib.mkForce false;
                 gpu_vm.enable = true;
                 disp_vm.enable = true;
               };
