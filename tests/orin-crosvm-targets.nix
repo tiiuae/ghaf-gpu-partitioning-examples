@@ -33,7 +33,7 @@ let
   hasShutdown =
     host: name:
     host.systemd.services ? "ghaf-crosvm-shutdown-${name}"
-    && host.systemd.services."microvm@${name}".serviceConfig.TimeoutStopSec == "35"
+    && host.systemd.services."microvm@${name}".serviceConfig.TimeoutStopSec == "125"
     &&
       lib.elem "CAP_DAC_OVERRIDE"
         host.systemd.services."ghaf-crosvm-shutdown-${name}".serviceConfig.CapabilityBoundingSet;
@@ -70,13 +70,13 @@ let
           ];
     }
     {
-      name = "release targets retain QEMU defaults";
+      name = "upstream release targets also default to Crosvm";
       ok =
         ghaf.nixosConfigurations."nvidia-jetson-orin-agx-release".config.ghaf.virtualization.vmConfig.defaultSysVmVmm
-        == "qemu"
+        == "crosvm"
         &&
           ghaf.nixosConfigurations."nvidia-jetson-orin-agx-release".config.ghaf.virtualization.vmConfig.defaultAppVmVmm
-          == "qemu";
+          == "crosvm";
     }
     {
       name = "GPU, display, and combined guests receive only their payload arguments";
@@ -163,6 +163,9 @@ assert lib.assertMsg (
   failed == [ ]
 ) "Orin Crosvm target checks failed: ${lib.concatStringsSep "; " failed}";
 runCommand "orin-crosvm-targets" { } ''
-  grep -Fq -- '--no-syslog stop' ${shutdownScript splitAgx "disp-vm"}
+  if grep -Fq -- '--no-syslog stop' ${shutdownScript splitAgx "disp-vm"}; then
+    echo "shutdown helper must not use Crosvm's hard-stop command" >&2
+    exit 1
+  fi
   touch "$out"
 ''
