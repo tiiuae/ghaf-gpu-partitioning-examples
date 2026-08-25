@@ -7,17 +7,22 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 
 ## Repository Boundary
 
-This repository depends on Ghaf in one direction. Ghaf supplies hardware and
-security-sensitive mechanisms; this repository supplies replaceable example
-payloads.
+This repository depends on Ghaf in one direction. Ghaf supplies generic VM,
+device-manager, GIVC, and shutdown mechanisms. This repository supplies the
+Orin GPU/display passthrough compositions and replaceable workload payloads.
+Jetpack-nixos supplies the hardware descriptions, patches, role policies, and
+device-tree builders through Ghaf's pinned input.
 
 ```text
 example target
-  ├── burn and latency plugins
-  ├── OCI images and scenario commands
+  ├── split or combined GPU/display composition
+  ├── burn, latency, and GEMM plugins
+  ├── OCI images and scenario commands (split targets)
   └── pinned Ghaf input
-        ├── AGX/NX passthrough and BPMP policy
-        ├── gpu-vm and disp-vm topology
+        ├── generic VM and device-manager integration
+        ├── Orin BPMP, DCE, and MGBE host mechanisms
+        ├── pinned jetpack-nixos hardware policy
+        ├── pinned upstream microvm.nix Crosvm interface
         ├── Docker/CDI integration
         └── pinned partition-manager input
               ├── daemon and client
@@ -25,9 +30,9 @@ example target
               └── mock-CUDA integration tests
 ```
 
-Neither Ghaf nor the manager imports this repository. Updating the examples
-therefore cannot change a normal Ghaf image unless a downstream target
-explicitly imports the module.
+Neither Ghaf nor the manager imports this repository. Normal Ghaf targets do
+not acquire GPU/display passthrough unless a downstream target explicitly
+imports `nixosModules.orin-passthrough`.
 
 External registry images are runtime test inputs, not flake inputs and not part
 of the flash closure. A profile supplies compatibility requirements and a test

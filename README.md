@@ -7,20 +7,23 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 
 This repository provides reproducible CUDA load examples for Ghaf's managed
 GPU partitioning support on NVIDIA Jetson Orin AGX and Orin NX. It consumes
-Ghaf as a pinned flake input. GPU passthrough, service integration, and the
-Container Device Interface (CDI) remain upstream in Ghaf. The daemon, client,
-protocol, plugin ABI, and mock-CUDA tests live in the standalone
+Ghaf as a pinned flake input. This repository owns the Orin GPU/display
+passthrough compositions and extends Ghaf's generic VM, device-manager, and
+shutdown mechanisms. Hardware descriptions and policy come from jetpack-nixos
+through Ghaf. The daemon, client, protocol, plugin ABI, and mock-CUDA tests live
+in the standalone
 [`ghaf-gpu-partition-manager`](https://github.com/tiiuae/ghaf-gpu-partition-manager)
 repository that Ghaf pins.
 
-The initial revision depends on
-[Ghaf PR 2095](https://github.com/tiiuae/ghaf/pull/2095) through its
+The passthrough examples depend on
+[Ghaf PR 2133](https://github.com/tiiuae/ghaf/pull/2133) through its
 authoritative pull-request ref. `flake.lock` fixes the exact reviewed commit.
 After that PR merges, change the input URL to `github:tiiuae/ghaf` and update
 the lock in a dedicated pull request.
 
 The examples include:
 
+- split GPU-VM/Display-VM and combined GUI-VM compositions for AGX and NX;
 - trusted `burn`, `latency`, and cuBLAS `gemm` manager plugins;
 - direct and managed container images;
 - digest-pinned external CUDA/PyTorch container interoperability profiles;
@@ -46,6 +49,8 @@ sudo -E env USER=root result-flash/bin/flash-ghaf-host -s result
 
 For NX, replace `agx` with `nx`. Flashing overwrites the selected Jetson
 rootfs; confirm the board is in Force Recovery Mode before running the helper.
+Build `nvidia-jetson-orin-{agx,nx}-combined-example` for the combined GUI-VM
+display regression topology.
 
 After boot, connect through NetVM and run the smoke suite:
 
