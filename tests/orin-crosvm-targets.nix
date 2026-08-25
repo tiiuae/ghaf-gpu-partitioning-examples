@@ -21,9 +21,10 @@ let
 
   vm = host: name: lib.ghaf.vm.getConfig host.microvm.vms.${name};
   uses = host: vmm: lib.all (entry: entry.type == vmm) host.ghaf.hardware.passthrough.vhotplug.vms;
+  dceHost = host: host.hardware.nvidia-jetpack.virtualization.dceHost.enable;
   hasArg = needle: guest: lib.any (lib.hasInfix needle) guest.microvm.crosvm.extraArgs;
   hasDevice = needle: guest: lib.any (device: lib.hasInfix needle device.path) guest.microvm.devices;
-  bpmpConsumers = host: host.ghaf.hardware.nvidia.virtualization.host.bpmp.consumers;
+  bpmpConsumers = host: host.hardware.nvidia-jetpack.virtualization.bpmpHost.consumers;
   hasReceiverDeny =
     host:
     lib.any (
@@ -103,6 +104,18 @@ let
         && hasArg "/dev/bpmp-host-disp-vm" splitAgxDisp
         && hasArg "/dev/bpmp-host-gui-vm" agxGui
         && agx.systemd.services."microvm@gui-vm".environment.GHAF_BPMP_HOST == "/dev/bpmp-host-gui-vm";
+    }
+    {
+      name = "DCE host support is owned by the downstream examples";
+      ok =
+        lib.all dceHost [
+          agx
+          nx
+          splitAgx
+          splitNx
+        ]
+        && !dceHost ghaf.nixosConfigurations."nvidia-jetson-orin-agx-debug-from-x86_64".config
+        && !dceHost ghaf.nixosConfigurations."nvidia-jetson-orin-nx-debug-from-x86_64".config;
     }
     {
       name = "NX PCI Ethernet uses the Crosvm-specific guest address";

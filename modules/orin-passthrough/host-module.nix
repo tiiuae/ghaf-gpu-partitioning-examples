@@ -43,7 +43,6 @@ let
   };
   roleConfig = roles.${role};
   cfg = config.ghaf.hardware.nvidia.passthroughs.${roleConfig.optionName};
-  virt = config.ghaf.hardware.nvidia.virtualization;
   support = pkgs.nvidia-jetpack.orinVirtualizationSupport;
   dtsRoot = "${support}/device-trees";
   inherit (support) bpmpPolicies;
@@ -86,7 +85,7 @@ let
       bpmpHostPath
       payload
       ;
-    inherit (virt) sourcesPatch;
+    sourcesPatch = "${support}/patches/linux/bpmp-sources.patch";
   };
   bindDevices = pkgs.writeShellScript "bind-${roleConfig.vmName}-vfio-platform" ''
     set -eu
@@ -105,8 +104,7 @@ in
   config = lib.mkIf cfg.enable (
     lib.mkMerge [
       {
-        ghaf.hardware.nvidia.virtualization.host.bpmp.enable = true;
-        ghaf.hardware.nvidia.virtualization.host.bpmp.consumers.${roleConfig.vmName} =
+        hardware.nvidia-jetpack.virtualization.bpmpHost.consumers.${roleConfig.vmName} =
           bpmpPolicies.${
             if role == "gpuvm" then
               "compute"
@@ -119,13 +117,12 @@ in
 
         assertions = [
           {
-            assertion = !config.ghaf.hardware.nvidia.virtualization.bpmpAllowAllDomains;
+            assertion = !config.hardware.nvidia-jetpack.virtualization.bpmpHost.allowAllDomains;
             message = "${roleConfig.vmName} passthrough requires the closed BPMP allow-list.";
           }
         ];
 
         services.udev.extraRules = ''
-          KERNEL=="bpmp-host-${roleConfig.vmName}", GROUP="kvm", MODE="0660"
           SUBSYSTEM=="vfio", GROUP="kvm"
         '';
 
@@ -158,6 +155,10 @@ in
 
         ghaf.hardware.definition.${roleConfig.definitionName}.extraModules = [ guestModule ];
       }
+
+      (lib.mkIf payload.needsDceBridge {
+        hardware.nvidia-jetpack.virtualization.dceHost.enable = true;
+      })
 
       (lib.mkIf roleConfig.ownsGpu {
         warnings = [
