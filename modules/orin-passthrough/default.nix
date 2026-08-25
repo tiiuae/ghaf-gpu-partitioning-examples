@@ -17,6 +17,7 @@ in
   _file = ./default.nix;
 
   imports = [
+    ./vm-composition.nix
     ./gpu-vm.nix
     ./disp-vm.nix
     ./gui-vm.nix
@@ -24,7 +25,6 @@ in
   ];
 
   config = {
-    ghaf.hardware.nvidia.orin.crosvm.enable = true;
     ghaf.hardware.passthrough.usb.guivmDeny =
       lib.mkIf config.ghaf.hardware.nvidia.passthroughs.gui_vm.enable
         (

@@ -21,9 +21,10 @@ let
 
   vm = host: name: lib.ghaf.vm.getConfig host.microvm.vms.${name};
   uses = host: vmm: lib.all (entry: entry.type == vmm) host.ghaf.hardware.passthrough.vhotplug.vms;
+  dceHost = host: host.hardware.nvidia-jetpack.virtualization.dceHost.enable;
   hasArg = needle: guest: lib.any (lib.hasInfix needle) guest.microvm.crosvm.extraArgs;
   hasDevice = needle: guest: lib.any (device: lib.hasInfix needle device.path) guest.microvm.devices;
-  bpmpConsumers = host: host.ghaf.hardware.nvidia.virtualization.host.bpmp.consumers;
+  bpmpConsumers = host: host.hardware.nvidia-jetpack.virtualization.bpmpHost.consumers;
   hasReceiverDeny =
     host:
     lib.any (
@@ -32,7 +33,7 @@ let
   hasShutdown =
     host: name:
     host.systemd.services ? "ghaf-crosvm-shutdown-${name}"
-    && host.systemd.services."microvm@${name}".serviceConfig.TimeoutStopSec == "35"
+    && host.systemd.services."microvm@${name}".serviceConfig.TimeoutStopSec == "125"
     &&
       lib.elem "CAP_DAC_OVERRIDE"
         host.systemd.services."ghaf-crosvm-shutdown-${name}".serviceConfig.CapabilityBoundingSet;
@@ -69,13 +70,13 @@ let
           ];
     }
     {
-      name = "release targets retain QEMU defaults";
+      name = "upstream release targets also default to Crosvm";
       ok =
         ghaf.nixosConfigurations."nvidia-jetson-orin-agx-release".config.ghaf.virtualization.vmConfig.defaultSysVmVmm
-        == "qemu"
+        == "crosvm"
         &&
           ghaf.nixosConfigurations."nvidia-jetson-orin-agx-release".config.ghaf.virtualization.vmConfig.defaultAppVmVmm
-          == "qemu";
+          == "crosvm";
     }
     {
       name = "GPU, display, and combined guests receive only their payload arguments";
@@ -103,6 +104,18 @@ let
         && hasArg "/dev/bpmp-host-disp-vm" splitAgxDisp
         && hasArg "/dev/bpmp-host-gui-vm" agxGui
         && agx.systemd.services."microvm@gui-vm".environment.GHAF_BPMP_HOST == "/dev/bpmp-host-gui-vm";
+    }
+    {
+      name = "DCE host support is owned by the downstream examples";
+      ok =
+        lib.all dceHost [
+          agx
+          nx
+          splitAgx
+          splitNx
+        ]
+        && !dceHost ghaf.nixosConfigurations."nvidia-jetson-orin-agx-debug-from-x86_64".config
+        && !dceHost ghaf.nixosConfigurations."nvidia-jetson-orin-nx-debug-from-x86_64".config;
     }
     {
       name = "NX PCI Ethernet uses the Crosvm-specific guest address";
@@ -150,6 +163,9 @@ assert lib.assertMsg (
   failed == [ ]
 ) "Orin Crosvm target checks failed: ${lib.concatStringsSep "; " failed}";
 runCommand "orin-crosvm-targets" { } ''
-  grep -Fq -- '--no-syslog stop' ${shutdownScript splitAgx "disp-vm"}
+  if grep -Fq -- '--no-syslog stop' ${shutdownScript splitAgx "disp-vm"}; then
+    echo "shutdown helper must not use Crosvm's hard-stop command" >&2
+    exit 1
+  fi
   touch "$out"
 ''
