@@ -288,11 +288,11 @@
         "xwayland-satellite": "xwayland-satellite"
       },
       "locked": {
-        "lastModified": 1787664844,
-        "narHash": "sha256-a3k00B4eLJ4+eGePdQwGQrYRXElj/SyTliBxYCp+lmI=",
+        "lastModified": 1787673784,
+        "narHash": "sha256-23gslC3udAEUCV6A2Hd5m8rCVupbn2T4nfKen+T8JqA=",
         "ref": "refs/pull/2133/head",
-        "rev": "13e173b8e4408c7c58826c52d91d202e9d05890f",
-        "revCount": 2721,
+        "rev": "433db836f47fff5fbdb8f736317e4ceae878cfd5",
+        "revCount": 2725,
         "type": "git",
         "url": "https://github.com/tiiuae/ghaf.git"
       },
@@ -376,10 +376,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1787592441,
-        "narHash": "sha256-qBx8tEyJD5cVazHAEQJAlSdWH47USGXY9gJpSPB2o2A=",
+        "lastModified": 1787670305,
+        "narHash": "sha256-NKiE3XtyT4z24dJEcf3NMlvtrUVaetWOjCuIzrUBaVg=",
         "ref": "refs/pull/369/head",
-        "rev": "752ceda37fb6a253f1631e759db13a5acca7f472",
+        "rev": "a0bbf5eb2af2503c4c0a7b10cf8f7f2c3845c67f",
         "revCount": 288,
         "type": "git",
         "url": "https://github.com/tiiuae/ghafpkgs"
@@ -534,11 +534,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1787664412,
+        "lastModified": 1787665373,
         "narHash": "sha256-UCFUTi+oVOeRqbiOXbQwOcpQ/z52ZnJMGncWtlv11Bg=",
         "owner": "tiiuae",
         "repo": "jetpack-nixos",
-        "rev": "39272212be5cba1c30e130fd108b7e2fd4941c90",
+        "rev": "b826bc5c5f91e1dcac9b6342cfb781e1aa621f11",
         "type": "github"
       },
       "original": {
