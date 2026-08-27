@@ -288,11 +288,11 @@
         "xwayland-satellite": "xwayland-satellite"
       },
       "locked": {
-        "lastModified": 1787693251,
-        "narHash": "sha256-owAraQWKSBCW6cOcuu6QCPFTMGSr+0J+LIwPwxbYokQ=",
+        "lastModified": 1787808677,
+        "narHash": "sha256-jbAd5XeXasdglklvlu7Oc8/8m6uZFPoqP381wFm46XQ=",
         "ref": "refs/pull/2133/head",
-        "rev": "4b9bea29547b459b7af57b6a2aff19630340ad59",
-        "revCount": 2733,
+        "rev": "35e8df49f8b496fa9fea3b930c158da72f003e4d",
+        "revCount": 2744,
         "type": "git",
         "url": "https://github.com/tiiuae/ghaf.git"
       },
@@ -305,11 +305,11 @@
     "ghaf-crosvm": {
       "flake": false,
       "locked": {
-        "lastModified": 1787513199,
-        "narHash": "sha256-BG/Fh5KcNUP8Q1ngKN6Z7q1fh4hAdQK07/1qYkouhwQ=",
-        "ref": "refs/heads/main",
-        "rev": "fba7ba3a796f9459107ee04e5a6599ac52f45954",
-        "revCount": 11724,
+        "lastModified": 1787724426,
+        "narHash": "sha256-7JjNkqwJg4wie3ESosbxCS3iGcV10keqr3WyuZX/CFM=",
+        "ref": "refs/heads/fix/uas-stop-endpoint",
+        "rev": "f2f3d2102da1f69dd151221bae13b9046ed79b15",
+        "revCount": 11726,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/tiiuae/ghaf-crosvm"
