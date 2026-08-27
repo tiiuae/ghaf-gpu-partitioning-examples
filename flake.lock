@@ -288,11 +288,11 @@
         "xwayland-satellite": "xwayland-satellite"
       },
       "locked": {
-        "lastModified": 1787808677,
-        "narHash": "sha256-jbAd5XeXasdglklvlu7Oc8/8m6uZFPoqP381wFm46XQ=",
+        "lastModified": 1787811413,
+        "narHash": "sha256-MenpgqyijhIT7ZlvC3ILkVZxLyrpfuoNieP6iOEVEWs=",
         "ref": "refs/pull/2133/head",
-        "rev": "35e8df49f8b496fa9fea3b930c158da72f003e4d",
-        "revCount": 2744,
+        "rev": "21e67aebdfad2a6ae924844c7cfb1901cb651a09",
+        "revCount": 2745,
         "type": "git",
         "url": "https://github.com/tiiuae/ghaf.git"
       },

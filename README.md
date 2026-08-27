@@ -7,11 +7,11 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 
 This repository provides reproducible CUDA load examples for Ghaf's managed
 GPU partitioning support on NVIDIA Jetson Orin AGX and Orin NX. It consumes
-Ghaf as a pinned flake input. This repository owns the Orin GPU/display
-passthrough compositions and extends Ghaf's generic VM, device-manager, and
-shutdown mechanisms. Hardware descriptions and policy come from jetpack-nixos
-through Ghaf. The daemon, client, protocol, plugin ABI, and mock-CUDA tests live
-in the standalone
+Ghaf as a pinned flake input. Ghaf owns the reusable Orin GPU/display VM
+compositions and consumes hardware descriptions and policy from jetpack-nixos.
+This repository adds the container runtime, partition manager integration,
+plugins, probes, scenarios, and workload payloads. The daemon, client, protocol,
+plugin ABI, and mock-CUDA tests live in the standalone
 [`ghaf-gpu-partition-manager`](https://github.com/tiiuae/ghaf-gpu-partition-manager)
 repository that Ghaf pins.
 
@@ -23,7 +23,7 @@ the lock in a dedicated pull request.
 
 The examples include:
 
-- split GPU-VM/Display-VM and combined GUI-VM compositions for AGX and NX;
+- split GPU-VM/Display-VM and combined GUI-VM example targets for AGX and NX;
 - trusted `burn`, `latency`, and cuBLAS `gemm` manager plugins;
 - direct and managed container images;
 - digest-pinned external CUDA/PyTorch container interoperability profiles;

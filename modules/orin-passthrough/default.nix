@@ -4,8 +4,5 @@
 {
   _file = ./default.nix;
 
-  imports = [
-    ./vm-composition.nix
-    ./gpu-vm.nix
-  ];
+  imports = [ ./gpu-vm.nix ];
 }

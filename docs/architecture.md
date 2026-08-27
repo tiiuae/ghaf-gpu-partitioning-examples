@@ -7,23 +7,23 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 
 ## Repository Boundary
 
-This repository depends on Ghaf in one direction. Ghaf supplies generic VM,
-device-manager, GIVC, and shutdown mechanisms. This repository supplies the
-Orin GPU/display passthrough compositions and replaceable workload payloads.
-Jetpack-nixos supplies the hardware descriptions, patches, role policies, and
-device-tree builders through Ghaf's pinned input.
+This repository depends on Ghaf in one direction. Ghaf supplies the reusable
+split and combined Orin GPU/display VM compositions plus generic device-manager,
+GIVC, and shutdown mechanisms. This repository supplies replaceable runtime and
+workload payloads. Jetpack-nixos supplies the hardware descriptions, patches,
+role policies, and device-tree builders through Ghaf's pinned input.
 
 ```text
 example target
-  ├── split or combined GPU/display composition
+  ├── Docker/CDI integration
   ├── burn, latency, and GEMM plugins
   ├── OCI images and scenario commands (split targets)
   └── pinned Ghaf input
-        ├── generic VM and device-manager integration
+        ├── split or combined GPU/display composition
+        ├── generic device-manager integration
         ├── Orin BPMP, DCE, and MGBE host mechanisms
         ├── pinned jetpack-nixos hardware policy
         ├── pinned upstream microvm.nix Crosvm interface
-        ├── Docker/CDI integration
         └── pinned partition-manager input
               ├── daemon and client
               ├── protocol and plugin ABI
@@ -31,8 +31,9 @@ example target
 ```
 
 Neither Ghaf nor the manager imports this repository. Normal Ghaf targets do
-not acquire GPU/display passthrough unless a downstream target explicitly
-imports `nixosModules.orin-passthrough`.
+not acquire the example container runtime, manager configuration, plugins, or
+workloads unless a downstream target explicitly imports
+`nixosModules.orin-passthrough`.
 
 External registry images are runtime test inputs, not flake inputs and not part
 of the flash closure. A profile supplies compatibility requirements and a test

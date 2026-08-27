@@ -32,6 +32,10 @@ in
   config = lib.mkIf cfg.enable {
     ghaf.hardware.definition.gpuvm.extraModules = [
       {
+        imports = [
+          ./gpuvm-container-runtime.nix
+          ./gpuvm-partition-manager.nix
+        ];
         ghaf.virtualization.gpuPartitionManager = {
           inherit (cfg.partitionManager) enable plugins;
         };
