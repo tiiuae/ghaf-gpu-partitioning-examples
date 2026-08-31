@@ -99,8 +99,7 @@ in
       };
     };
 
-    # Add only example payloads to gpu-vm. GPU ownership, the manager, CDI, and
-    # the security boundary remain supplied by the pinned Ghaf input.
+    # Add only example payloads to the Ghaf-owned gpu-vm composition.
     ghaf.hardware.definition.gpuvm.extraModules = [
       {
         _module.args.gpuPartitionExampleMetadata = cfg.metadata;

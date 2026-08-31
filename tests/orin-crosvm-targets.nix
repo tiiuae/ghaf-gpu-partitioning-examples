@@ -33,7 +33,7 @@ let
   hasShutdown =
     host: name:
     host.systemd.services ? "ghaf-crosvm-shutdown-${name}"
-    && host.systemd.services."microvm@${name}".serviceConfig.TimeoutStopSec == "125"
+    && host.systemd.services."microvm@${name}".serviceConfig.TimeoutStopSec == "95"
     &&
       lib.elem "CAP_DAC_OVERRIDE"
         host.systemd.services."ghaf-crosvm-shutdown-${name}".serviceConfig.CapabilityBoundingSet;
@@ -106,16 +106,15 @@ let
         && agx.systemd.services."microvm@gui-vm".environment.GHAF_BPMP_HOST == "/dev/bpmp-host-gui-vm";
     }
     {
-      name = "DCE host support is owned by the downstream examples";
-      ok =
-        lib.all dceHost [
-          agx
-          nx
-          splitAgx
-          splitNx
-        ]
-        && !dceHost ghaf.nixosConfigurations."nvidia-jetson-orin-agx-debug-from-x86_64".config
-        && !dceHost ghaf.nixosConfigurations."nvidia-jetson-orin-nx-debug-from-x86_64".config;
+      name = "DCE host support is inherited from upstream";
+      ok = lib.all dceHost [
+        agx
+        nx
+        splitAgx
+        splitNx
+        ghaf.nixosConfigurations."nvidia-jetson-orin-agx-debug-from-x86_64".config
+        ghaf.nixosConfigurations."nvidia-jetson-orin-nx-debug-from-x86_64".config
+      ];
     }
     {
       name = "NX PCI Ethernet uses the Crosvm-specific guest address";

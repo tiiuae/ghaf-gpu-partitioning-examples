@@ -12,11 +12,7 @@ in
 {
   _file = ./default.nix;
 
-  imports = [ (import ./host-module.nix { role = "gpuvm"; }) ];
-
   options.ghaf.hardware.nvidia.passthroughs.gpu_vm = {
-    enable = lib.mkEnableOption "Tegra234 GPU and engine passthrough to gpu-vm on NVIDIA Orin";
-
     containerRuntime = {
       enable = lib.mkEnableOption "Docker with NVIDIA CDI devices in gpu-vm";
       addGhafUserToDockerGroup = lib.mkEnableOption "root-equivalent Docker access for the ghaf user in gpu-vm";
@@ -36,6 +32,10 @@ in
   config = lib.mkIf cfg.enable {
     ghaf.hardware.definition.gpuvm.extraModules = [
       {
+        imports = [
+          ./gpuvm-container-runtime.nix
+          ./gpuvm-partition-manager.nix
+        ];
         ghaf.virtualization.gpuPartitionManager = {
           inherit (cfg.partitionManager) enable plugins;
         };
